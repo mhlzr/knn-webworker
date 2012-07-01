@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    
+    <head>
+        <title>k-Nearest-Neighbours</title>
+		
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="author" content="Matthieu Holzer" />
+
+        <link type="text/css" href="css/start/jquery-ui-1.8.21.custom.css" rel="stylesheet"  />
+        <link href="css/default.css" rel="stylesheet" type="text/css" media="all" />
+		
+        <script src="js/lib/underscore-min.js"></script>
+        <script src="js/lib/jquery-1.7.2.min.js"></script>
+        <script src="js/lib/jquery-ui-1.8.21.custom.min.js"></script>
+        <script src="js/lib/jquery.tablesorter.min.js"></script>
+        <script src="js/knn.model.js"></script>
+        <script src="js/knn.dataImportModule.js"></script>
+        <script src="js/knn.graphicsModule.js"></script>
+        <script src="js/knn.application.js"></script>
+		
+        <script>
+            $(document).ready(KNN.Application.init);
+        </script>
+		
+    </head>
+    
+    <body>
+        <noscript>Please activate JavaScript, otherwise you can't use this application.</noscript>
+        <div id="dataSourceForm" title="k-Nearest-Neighbours options">
+            <div id="leftForm">
+                <input id="aTypeCustom" type="radio" name="analysisType" value="custom" checked />
+                <label for="aTypeCustom">Custom knn-Analysis</label>
+                <fieldset>
+                    <legend>Training Data</legend>
+                    <label for="trainingDataInput">File</label>
+                    <input type="file" id="trainingDataInput" />
+                    <label for="trainingDataClassIndex">Class-attribute position</label>
+                    <input type="number" id="trainingDataClassIndex" min=0 step=1 />
+                    <span style="float:left;clear:both">Datasets total</span>
+                    <span class="result" id="trainingDatasetsAmount">
+                        <em>0</em> records x
+                        <em>0</em> attributes</span>
+                    <button id="trainingDataParseBtn" disabled>Parse file</button>
+                </fieldset>
+                <fieldset>
+                    <legend>Test Data</legend>
+                    <label for="trainingDataInput">File</label>
+                    <input type="file" id="testDataInput" />
+                    <label for="testDataClassIndex">Class-attribute position (None = -1)</label>
+                    <input type="number" id="testDataClassIndex" min=-1 step=1 />
+                    <span style="float:left;clear:both">Datasets total</span>
+                    <span class="result" id="testDatasetsAmount">
+                        <em>0</em> records x
+                        <em>0</em> attributes</span>
+                    <button id="testDataParseBtn" disabled>Parse file</button>
+                </fieldset>
+                <fieldset>
+                    <legend>General</legend>
+                    <input type="checkbox" id="twoDimensionalDataValue" checked/>
+                    <label for="twoDimensionalDataValue">Visualize the dataset as XY-tupels
+                        <br/>
+                        <span class="example">
+							(e.g. x<sub>1</sub>,y<sub>1</sub>,x<sub>2</sub>,y<sub>2</sub>, ... x<sub>n</sub>, y<sub>n</sub>)
+						</span>
+                    </label>
+                    <span style="float:left;clear:both;margin-top:5px">Amount of different classes</span>
+                    <span id="classesAmount">0</span>
+                </fieldset>
+            </div>
+            <div id="rightForm">
+                <h1>Examples</h1>
+                <input id="aTypeExChar" type="radio" name="analysisType" value="ex-characters" />
+                <label for="aTypeExChar">Character-recognition example</label>
+                <p>
+                    <em>Training:</em> 7,495 records x 17 attributes
+                    <br/>
+                    <em>Test:</em> 3,498 records x 17 attributes
+                    <br/>
+                    <em>Classes:</em> 10</p>
+                <input id="aTypeExOil" type="radio" name="analysisType" value="ex-oils" />
+                <label for="aTypeExOil">Oil example</label>
+                <p>
+                    <em>Training:</em> 208 records x 9 attributes
+                    <br/>
+                    <em>Test:</em> 208 records x 9 attributes
+                    <br/>
+                    <em>Classes:</em> 9</p>
+                <input id="aTypeRandom" type="radio" name="analysisType" value="random" />
+                <label for="aTypeRandom">Random data</label>
+                <p>
+                    <em>Training:</em> 10000 records x 40 attributes
+                    <br/>
+                    <em>Test:</em> 10000 records x 40 attributes
+                    <br/>
+                    <em>Classes:</em> 9</p>
+            </div>
+			
+			<div id="exampleLoaderAni">
+				<em>Loading example data</em><img src="img/ajax-loader.gif" alt="Loader-Icon" width=16 height=16 />
+			</div>
+			
+            </div>
+            <div id="mainWrapper">
+                <div id="controlMenu">
+                    <em>Parameters:</em>
+                    <em>k (amount of neighbours)</em>
+                    <input type="number" id="kAmountInput" value=20 min=1 step=1 />
+                    <em>σ (sigma)</em>
+                    <input type="number" id="sigmaAmountInput" value=40 min=0 />
+                    <em>Kernel-Function</em>
+                    <select id="kernelFuncNameInput">
+                        <option value="none">None</option>
+                        <option value="rect" selected>Rectangle</option>
+                        <option value="triangle">Triangle</option>
+                        <option value="tricubic">Tricubic</option>
+                        <option value="gauss">Gaussian</option>
+                    </select>
+                    <em>Distance-Function</em>
+                    <select id="distanceFuncNameInput">
+                        <option value="euclid" selected>Euclidean</option>
+                        <option value="manhattan">Manhattan</option>
+                    </select>
+                    <input type="checkbox" id="autoIncrementSigmaOption" />
+                    <label for="autoIncrementSigmaOption">Auto-increment σ if necessary to reach k neighbours</label>
+                    <input type="button" id="workerCtrlBtn" value="Start kNN-Analysis" />
+                </div>
+                <div id="progressbar">
+                    <span id="progressbarLabel"></span>
+                </div>
+                <div id="leftWrapper">
+                    <div id="tableContainer" class="tablesorter">
+                        <table id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Attributes</th>
+                                    <th>σ increased</th>
+                                    <th>Predicted Class</th>
+                                    <th>Original Class</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div id="placeHolder">Nothing to display here, hit the Start-Button!</div>
+                    </div>
+                    <div id="statsContainer">0 error(s)</div>
+                </div>
+                <div id="rightWrapper">
+                    <h2>Visualization of neighbours, sigma and distances</h2>
+                    <div id="diagramCanvasContainer">
+                        <canvas id="diagramCanvas" width=400 height=350></canvas>
+                    </div>
+                    <h2>Legend &amp; Details</h2>
+                    <div id="legend">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Neighbours</th>
+                                    <th>&lt;=σ (sigma)</th>
+                                    <th>Weight total</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan=2>Total:</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div id="footer">
+                    <h2>Nearest Neighbours data representation and it's weight (limited to 250
+                        neighbours)</h2>
+                    <div id="charCanvasContainer">
+                        <canvas id="charCanvas" width=25000 height=140></canvas>
+                    </div>
+                </div>
+            </div>
+
+</html>

@@ -1,0 +1,381 @@
+* {
+  font-family: "Verdana";
+  font-size: 8pt;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #212121;
+}
+
+noscript {
+  color: #ffffff;
+  display: block;
+  border: 2px solid red;
+  padding: 5px;
+  margin: 20px;
+}
+
+h1, h2 {
+  color: #ffffff;
+  text-shadow: 2px 1px 3px #000000;
+}
+
+em {
+  font-style: normal;
+}
+
+legend, em, noscript {
+  font-weight: bold;
+}
+
+th {
+  padding: 2px;
+}
+
+sub {
+  font-size: inherit;
+  color: inherit;
+}
+
+.left {
+  text-align: left !important;
+  padding-left: 3px;
+}
+
+.longfield {
+  overflow: hidden;
+  width: 80px;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+#mainWrapper {
+  min-width: 1400px;
+  display: none;
+  margin: 0 auto;
+}
+
+#mainWrapper,
+#progressbar,
+#progressbarLabel {
+  max-width: 1600px;
+}
+
+#leftWrapper, #rightWrapper {
+  float: left;
+  display: block;
+  width: 50%;
+  overflow: auto;
+}
+
+#footer {
+  clear: both;
+  min-width: 1040px;
+}
+
+#rightWrapper {
+  min-width: 350px;
+  width: 50%;
+  padding: 0px 20px 0px 40px;
+}
+
+#controlMenu {
+  border: 1px solid #a0a0a0;
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  background-color: #c0c0c0;
+  background: -moz-linear-gradient(top, silver 16%, #898989 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(16%, silver), color-stop(100%, #898989));
+  background: -webkit-linear-gradient(top, silver 16%, #898989 100%);
+  background: -o-linear-gradient(top, silver 16%, #898989 100%);
+  background: -ms-linear-gradient(top, silver 16%, #898989 100%);
+  background: linear-gradient(top, silver 16%, #898989 100%);
+}
+
+#controlMenu input[type=button] {
+  float: right;
+  height: 24px;
+}
+
+#controlMenu input[type=number],
+#controlMenu select {
+  margin-right: 6px;
+}
+
+#controlMenu input[type=number] {
+  width: 50px;
+  text-align: center;
+}
+
+#controlMenu input[type=checkbox] {
+  margin-right: 6px;
+  margin-left: 10px;
+  position: relative;
+  top: 2px;
+}
+
+#controlMenu label {
+  text-align: left;
+  font-weight: bold;
+}
+
+#progressbar {
+  width: 100%;
+  height: 20px;
+  margin: 10px 0px;
+  visibility: hidden;
+}
+
+#progressbarLabel {
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  margin-top: 3px;
+  font-weight: bold;
+}
+
+#tableContainer {
+  overflow: auto;
+  width: 100%;
+  height: 600px;
+  border: 1px solid #c0c0c0;
+  border-radius: 5px;
+  background-color: #efefef;
+}
+
+#placeHolder {
+  width: 100%;
+  height: 300px;
+  text-align: center;
+  position: relative;
+  top: 50%;
+}
+
+#tableContainer table {
+  width: 100%;
+  border: 1px solid #c0c0c0;
+  border-collapse: collapse;
+  cursor: pointer;
+  background-color: #ffffff;
+}
+
+#tableContainer table th {
+  text-shadow: 1px 1px 1px #c0c0c0;
+}
+
+#tableContainer table th, #tableContainer table td {
+  text-align: center;
+  border: 1px solid #c0c0c0;
+  cursor: pointer;
+}
+
+#tableContainer table tbody tr:nth-child(odd) {
+  background-color: #d0d0d0;
+}
+
+#tableContainer table tbody tr:hover {
+  background-color: #66BBEE;
+}
+
+#statsContainer {
+  width: 100%;
+  text-align: right;
+  font-weight: bold;
+  margin-top: 6px;
+  color: #ffffff;
+}
+
+#charCanvasContainer {
+  padding: 20px 5px 5px 5px;
+  border: 1px solid #c0c0c0;
+  margin-top: 10px;
+  width: 100%;
+  overflow: auto;
+  border-radius: 5px;
+}
+
+#legend {
+  margin-bottom: 5px;
+  overflow: auto;
+  height: 230px;
+}
+
+#legend table {
+  border: 1px solid #ffffff;
+  border-collapse: collapse;
+  text-align: center;
+  width: 100%;
+}
+
+#legend table th {
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+#legend table tr td {
+  color: #ffffff;
+  padding: 2px;
+  border: 1px solid #ffffff;
+  font-weight: bold;
+  text-shadow: 0.1em 0.1em 0.1em rgba(36, 36, 36, 0.7), 0.1em -0.1em 0.1em rgba(36, 36, 36, 0.7), -0.1em 0.1em 0.1em rgba(36, 36, 36, 0.7), -0.1em -0.1em 0.1em rgba(36, 36, 36, 0.7);
+}
+
+#legend table tfoot {
+  display: none;
+}
+
+#diagramCanvasContainer {
+  float: left;
+  width: 100%;
+  height: 350px;
+  text-align: center;
+}
+
+.active {
+  background-color: #f2e405 !important;
+}
+
+.error {
+  background-color: #FF0000 !important;
+}
+
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
+.example {
+  font-size: 6.5pt;
+  color: #0696bb;
+}
+
+#dataSourceForm {
+  background-color: #efefef;
+  height: 380px;
+  width: 650px;
+  overflow: auto;
+}
+
+#dataSourceForm input {
+  float: right;
+}
+
+#dataSourceForm input[type=radio] ~ label {
+  font-weight: bold;
+  margin: 3px 0px 10px 5px;
+}
+
+#dataSourceForm label,
+#dataSourceForm input {
+  margin: 5px 0px 0px 0px;
+}
+
+#dataSourceForm label,
+#dataSourceForm h1,
+#dataSourceForm h2 {
+  float: left;
+  padding: 2px 0px 0px 0px;
+  color: #000000;
+  text-shadow: none;
+}
+
+#dataSourceForm table {
+  width: 100%;
+  border: 1px solid red;
+  text-align: center;
+}
+
+#dataSourceForm table th {
+  cursor: default;
+}
+
+#dataSourceForm table td {
+  cursor: pointer;
+}
+
+#dataSourceForm hr {
+  width: 100%;
+  border: 0;
+  background-color: #000000;
+  height: 1px;
+  float: left;
+  margin-top: 20px;
+}
+
+#dataSourceForm ul {
+  clear: both;
+  float: left;
+}
+
+#dataSourceForm button {
+  clear: both;
+  float: right;
+}
+
+#dataSourceForm input,
+#dataSourceForm span.result {
+  float: right;
+}
+
+#dataSourceForm input[type=number] {
+  width: 50px;
+  text-align: center;
+}
+
+#dataSourceForm input[type=radio] {
+  clear: both;
+  float: left;
+}
+
+#dataSourceForm span.result {
+  width: 200px;
+  text-align: right;
+}
+
+#classesAmount {
+  float: right;
+  margin-top: 5px;
+  text-align: right;
+}
+
+#dataSourceForm fieldset {
+  margin-top: 5px;
+  width: 100%;
+}
+
+#exampleLoaderAni {
+  width: 100%;
+  height: 16px;
+  display: none;
+}
+
+#exampleLoaderAni * {
+  float: right;
+}
+
+#exampleLoaderAni em {
+  padding: 2px 10px;
+}
+
+#dataSourceForm p {
+  float: left;
+  text-align: justify;
+  clear: both;
+  margin-bottom: 20px;
+}
+
+#leftForm {
+  padding: 5px 15px;
+  float: left;
+  width: 55%;
+}
+
+#rightForm {
+  width: 45%;
+  float: left;
+  padding: 5px 15px;
+}
